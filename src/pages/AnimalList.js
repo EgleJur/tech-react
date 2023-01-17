@@ -11,8 +11,14 @@ export function AnimalListPage(props) {
             .then(jsonResponse => setAnimals(jsonResponse));
     }, []);
 
+    const deleteAnimal = (id) => {
+        fetch("api/v1/animals/" + id, {
+            method: "DELETE",
+        headers: {"Accept":"application/json", 
+        "Content-Type":"application/json"}})
+    };
 
-
+  
     return (<div>
         <h2>Animals</h2>
         <table>
@@ -22,6 +28,7 @@ export function AnimalListPage(props) {
                     <th>Vardas</th>
                     <th>Tipas</th>
                     <th>Veiksmai</th>
+                    <th></th>
                 </tr>
             </thead>
         </table>
@@ -32,6 +39,7 @@ export function AnimalListPage(props) {
         <td>{animal.name}</td>
         <td>{animal.type}</td>
         <td>{animal.description}</td>
+        <td><button onClick={() => deleteAnimal(animal.id)}>Delete</button></td>
     </tr>
 ))}
         </tbody>
