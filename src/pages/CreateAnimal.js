@@ -1,10 +1,12 @@
 import { useState } from "react"
+import {useHref} from 'react-router-dom';
 
 export function CreateAnimalPage(props) {
     const [name, setName] = useState("");
     const [type, setType] = useState("TIGER");
     const [description, setDescription] = useState("");
 
+    const listUrl = useHref('/');
     const clear = () =>{
         setName("");
         setType("");
@@ -31,7 +33,8 @@ export function CreateAnimalPage(props) {
                 description,
                 registered: false
             })
-        });
+        }).then(applyResult)
+        .then(() => window.location = listUrl);
     };
 
 

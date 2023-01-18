@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { AnimalRoomMover } from "../components/AnimalRoomMover";
 
 
-export function ViewAnimal(props) {
+export function ViewAnimal() {
     const [animal, setAnimal] = useState({});
+    const params = useParams();
 
 useEffect(()=>{
-    fetch('api/v1/animals/' + props.id)
+    fetch('api/v1/animals/' + params.id)
     .then((response)=> response.json())
     .then(setAnimal)
-}, [props.id]);
+}, [params.id]);
 
     return(<div>
             <div><b>ID</b></div>
@@ -27,7 +29,7 @@ useEffect(()=>{
             <div><b>Room</b></div>
             <div>{animal.room && animal.room.name}</div>
 
-            <AnimalRoomMover id={props.id} onAnimalChange={setAnimal}/>
+            <AnimalRoomMover id={params.id} onAnimalChange={setAnimal}/>
         </div>);
 
 
