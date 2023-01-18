@@ -1,5 +1,6 @@
 import { useState } from "react"
 import {useHref} from 'react-router-dom';
+import { ANIMAL_TYPES } from '../constants/Constants';
 
 export function CreateAnimalPage(props) {
     const [name, setName] = useState("");
@@ -51,13 +52,11 @@ export function CreateAnimalPage(props) {
             </div>
             <div>
                 <label htmlFor="type">Type </label>
+                </div><div>
                 <select value={type}
                     onChange={(e) => setType(e.target.value)}>
-                        <option value= "TIGER">Tiger </option>
-                        <option value= "LION">Lion </option>
-                        <option value= "GIRAFFE">Giraffe </option>
-                        <option value= "PARROT">Parrot </option>
-                        <option value= "RABBIT">Rabbit </option>
+                        {Object.entries(ANIMAL_TYPES)
+ .map(([key, value]) => <option key={key} value={key}>{value}</option>)}
                     </select>
                 
             </div>
