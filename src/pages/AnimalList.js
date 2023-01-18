@@ -1,24 +1,33 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
 export function AnimalListPage(props) {
 
     const [animals, setAnimals] = useState([]);
+    const JSON_HEADERS = {
+        "Content-Type": "application/json"
+    }
 
-    useEffect(() => {
+    const fetchAnimals = () => {
         fetch('api/v1/animals')
             .then(response => response.json())
             .then(jsonResponse => setAnimals(jsonResponse));
+    };
+
+
+    useEffect(() => {
+        fetchAnimals();
     }, []);
 
     const deleteAnimal = (id) => {
         fetch("api/v1/animals/" + id, {
             method: "DELETE",
-        headers: {"Accept":"application/json", 
-        "Content-Type":"application/json"}})
+            headers: JSON_HEADERS
+        }).then(fetchAnimals);
     };
 
-  
+
     return (<div>
         <h2>Animals</h2>
         <table>
@@ -29,19 +38,24 @@ export function AnimalListPage(props) {
                     <th>Tipas</th>
                     <th>Veiksmai</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
         </table>
         <tbody>
-{animals.map(animal =>(
-    <tr key={animal.id}>
-        <td><a href="#" onClick={()=>props.onChange(animal.id)}>{animal.id}</a></td>
-        <td>{animal.name}</td>
-        <td>{animal.type}</td>
-        <td>{animal.description}</td>
-        <td><button onClick={() => deleteAnimal(animal.id)}>Delete</button></td>
-    </tr>
-))}
+            {animals.map(animal => (
+                <tr key={animal.id}>
+                    <td>
+                        <Link to={"/animals/view/" + animal.id}>{animal.id}</Link>
+                    </td>
+                    <td>{animal.name}</td>
+                    <td>{animal.type}</td>
+                    <td>{animal.description}</td>
+                    <td><button onClick={() => deleteAnimal(animal.id)}>Delete</button></td>
+                    <td><Link to={"/animals/update/" + animal.id}>
+                    <button>Update</button></Link></td>
+                </tr>
+            ))}
         </tbody>
     </div>
     )
